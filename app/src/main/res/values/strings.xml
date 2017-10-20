@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">StashChallenge</string>
+
+
+    <string name="getty_base_url">https://api.gettyimages.com/v3/</string>
+    <string name="getty_api_key">5g2jfrdtcee95ang4rrj8ytk</string>
+
+    <string name="search_hint">Search Phrase</string>
+    <string name="metadata_title_format">%1$s by %2$s</string>
+    <string name="retry">Retry</string>
+    <string name="images_response_error">An error occurred.</string>
+    <string name="popup_dialog_image_description">Image</string>
+    <string name="popup_dialog_similar_image_description">Similar image</string>
+</resources>
