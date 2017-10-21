@@ -14,7 +14,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".listing.MainActivity"
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateUnchanged">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
