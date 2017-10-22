@@ -1,5 +1,6 @@
 package com.stashinvest.stashchallenge.listing.popup;
 
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.stashinvest.stashchallenge.api.model.ImageResponse;
@@ -44,12 +45,12 @@ public class PopUpDialogPresenter {
         loadSimilarImages(imageId);
     }
 
-    private void displayImage(String imageUrl) {
+    void displayImage(String imageUrl) {
         view.hideKeyboard();
         view.displayImage(imageUrl);
     }
 
-    private void loadImageMetadata(String imageId) {
+    void loadImageMetadata(String imageId) {
         Disposable disposable = getImageMetadataUseCase.getMetadata(imageId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -68,9 +69,9 @@ public class PopUpDialogPresenter {
         }
     }
 
-    private void loadSimilarImages(String imageId) {
+    void loadSimilarImages(String imageId) {
         Disposable disposable = getSimilarImagesUseCase.getImages(imageId)
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onSimilarImagesLoaded, this::onError);
         compositeDisposable.add(disposable);
@@ -96,6 +97,11 @@ public class PopUpDialogPresenter {
     void reset() {
         if (compositeDisposable != null && !compositeDisposable.isDisposed())
             compositeDisposable.dispose();
+    }
+
+    @VisibleForTesting
+    void setCompositeDisposable(CompositeDisposable compositeDisposable) {
+        this.compositeDisposable = compositeDisposable;
     }
 
     interface View {
