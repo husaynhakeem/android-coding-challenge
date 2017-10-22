@@ -1,5 +1,6 @@
 package com.stashinvest.stashchallenge.listing.main;
 
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.stashinvest.stashchallenge.api.model.ImageResponse;
@@ -53,11 +54,13 @@ class MainPresenter {
         compositeDisposable = new CompositeDisposable();
     }
 
-    private void onImagesInitiallyLoaded(ImageResponse imageResponse) {
+    void onImagesInitiallyLoaded(ImageResponse imageResponse) {
         Disposable disposable = Observable.just(imageResponse.getImages())
                 .flatMapIterable(images -> images)
                 .map(image -> (BaseViewModel) gettyImageFactory.createGettyImageViewModel(image))
                 .toList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onImagesReady, this::onFailure);
         compositeDisposable.add(disposable);
     }
@@ -76,6 +79,16 @@ class MainPresenter {
     void reset() {
         if (compositeDisposable != null && !compositeDisposable.isDisposed())
             compositeDisposable.dispose();
+    }
+
+    @VisibleForTesting
+    void setCompositeDisposable(CompositeDisposable compositeDisposable) {
+        this.compositeDisposable = compositeDisposable;
+    }
+
+    @VisibleForTesting
+    CompositeDisposable getCompositeDisposable() {
+        return compositeDisposable;
     }
 
     interface View {

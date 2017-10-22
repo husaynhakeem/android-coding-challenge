@@ -9,21 +9,22 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import io.reactivex.Single;
+import io.reactivex.disposables.CompositeDisposable;
 
+import static android.test.MoreAsserts.assertNotEqual;
+import static com.stashinvest.stashchallenge.listing.TestsHelper.ANY_KEYWORD;
+import static com.stashinvest.stashchallenge.listing.TestsHelper.anyImageResponseSingle;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class MainPresenterShould {
 
-    private static final String ANY_KEYWORD = "any_keyword";
-
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    LoadGettyImagesUseCase getImagesUseCase;
+    LoadGettyImagesUseCase loadGettyImagesUseCase;
 
     @Mock
     GettyImageFactory gettyImageFactory;
@@ -34,26 +35,32 @@ public class MainPresenterShould {
     @Mock
     MainPresenter.View view;
 
-    private MainPresenter mainPresenter;
+    private MainPresenter presenter;
 
     @Before
     public void setUp() throws Exception {
-        mainPresenter = new MainPresenter(getImagesUseCase, gettyImageFactory);
-        mainPresenter.setView(view);
+        presenter = new MainPresenter(loadGettyImagesUseCase, gettyImageFactory);
+        presenter.setView(view);
     }
 
     @Test
     public void hideKeyboardAndShowLoadingIndicator_whenSearchTriggered() throws Exception {
-        when(getImagesUseCase.loadImages(anyString())).thenReturn(Single.just(anyImageResponse()));
+        when(loadGettyImagesUseCase.loadImages(anyString())).thenReturn(anyImageResponseSingle());
 
-        mainPresenter.search(ANY_KEYWORD);
+        presenter.search(ANY_KEYWORD);
 
         verify(view).hideKeyboard();
         verify(view).displayLoadingIndicator(true);
     }
 
-    private ImageResponse anyImageResponse() {
-        return new ImageResponse();
+    @Test
+    public void reInitializeTheCompositeDisposableIfItIsNotNull_whenStartingNewSearch() throws Exception {
+        CompositeDisposable compositeDisposable = new CompositeDisposable();
+        when(loadGettyImagesUseCase.loadImages(anyString())).thenReturn(anyImageResponseSingle());
+
+        presenter.setCompositeDisposable(compositeDisposable);
+        presenter.search(ANY_KEYWORD);
+
+        assertNotEqual(presenter.getCompositeDisposable(), compositeDisposable);
     }
 }
-
