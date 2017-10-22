@@ -5,12 +5,13 @@ import com.stashinvest.stashchallenge.listing.viewmodel.GettyImageViewModel;
 
 import javax.inject.Inject;
 
-public class GettyImageFactory {
+class GettyImageFactory {
+
     @Inject
-    public GettyImageFactory() {
+    GettyImageFactory() {
     }
 
-    public GettyImageViewModel createGettyImageViewModel(int id, ImageResult imageResult, GettyImageViewModel.Listener listener) {
-        return new GettyImageViewModel(id, imageResult, listener);
+    public GettyImageViewModel createGettyImageViewModel(ImageResult imageResult) {
+        return new GettyImageViewModel(imageResult);
     }
 }

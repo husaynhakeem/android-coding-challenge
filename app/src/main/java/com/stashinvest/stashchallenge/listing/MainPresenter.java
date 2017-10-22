@@ -44,7 +44,7 @@ class MainPresenter {
     private void onResponse(ImageResponse imageResponse) {
         Observable.just(imageResponse.getImages())
                 .flatMapIterable(images -> images)
-                .map(image -> (BaseViewModel) gettyImageFactory.createGettyImageViewModel(index++, image, this::onLongPress))
+                .map(image -> (BaseViewModel) gettyImageFactory.createGettyImageViewModel(image))
                 .toList()
                 .subscribe(this::onImagesReady, this::onFailure);
     }
@@ -58,10 +58,6 @@ class MainPresenter {
         view.showLoadingIndicator(false);
         view.onFailure();
         Log.e(TAG, "Error while fetching the images: " + throwable.getMessage());
-    }
-
-    private void onLongPress(String id, String url) {
-        view.onImageLongPress(id, url);
     }
 
     interface View {

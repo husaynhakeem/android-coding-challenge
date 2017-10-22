@@ -9,7 +9,7 @@ public abstract class BaseViewModel<T extends RecyclerView.ViewHolder> {
     private final int itemResourceId;
 
 
-    public BaseViewModel(int itemResourceId) {
+    BaseViewModel(int itemResourceId) {
         this.itemResourceId = itemResourceId;
     }
 

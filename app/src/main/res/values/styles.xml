@@ -6,15 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="MyCustomTheme" parent="@android:style/Theme.Panel">
-        <item name="android:windowAnimationStyle">@style/MyAnimation.Window</item>
-    </style>
-
-    <style name="MyAnimation.Window" parent="@android:style/Animation.Activity">
-        <item name="android:windowEnterAnimation">@anim/dialog_anim_in</item>
-        <item name="android:windowExitAnimation">@anim/dialog_anim_out</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
 </resources>
