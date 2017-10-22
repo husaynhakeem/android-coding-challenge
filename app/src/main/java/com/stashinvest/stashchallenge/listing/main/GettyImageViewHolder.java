@@ -1,4 +1,4 @@
-package com.stashinvest.stashchallenge.listing;
+package com.stashinvest.stashchallenge.listing.main;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,19 +21,20 @@ import butterknife.ButterKnife;
 import static com.stashinvest.stashchallenge.listing.popup.PopUpDialogActivity.IMAGE_ID;
 import static com.stashinvest.stashchallenge.listing.popup.PopUpDialogActivity.IMAGE_URL;
 
-public class GettyImageViewHolder extends RecyclerView.ViewHolder {
+class GettyImageViewHolder extends RecyclerView.ViewHolder {
+
     @BindView(R.id.popup_image_view)
     ImageView imageView;
 
     private Context context;
 
-    public GettyImageViewHolder(View itemView) {
+    GettyImageViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         this.context = itemView.getContext();
     }
 
-    public void bind(ImageResult imageResult) {
+    void bind(ImageResult imageResult) {
         Picasso.with(itemView.getContext())
                 .load(imageResult.getThumbUri())
                 .into(imageView);
@@ -44,19 +45,22 @@ public class GettyImageViewHolder extends RecyclerView.ViewHolder {
 
     private boolean onLongClick(String imageId, String imageUrl) {
         Intent intent = new Intent(context, PopUpDialogActivity.class);
+        intent.putExtras(popupDialogExtraArguments(imageId, imageUrl));
+        context.startActivity(intent, popupDialogAnimationBundle());
+        return true;
+    }
 
+    private Bundle popupDialogExtraArguments(String imageId, String imageUrl) {
         Bundle extras = new Bundle();
         extras.putString(IMAGE_ID, imageId);
         extras.putString(IMAGE_URL, imageUrl);
-        intent.putExtras(extras);
+        return extras;
+    }
 
-        Bundle animationBundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+    private Bundle popupDialogAnimationBundle() {
+        return ActivityOptionsCompat.makeSceneTransitionAnimation(
                 (Activity) context,
                 imageView,
                 ViewCompat.getTransitionName(imageView)).toBundle();
-
-        context.startActivity(intent, animationBundle);
-
-        return true;
     }
 }

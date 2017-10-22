@@ -1,4 +1,4 @@
-package com.stashinvest.stashchallenge.listing;
+package com.stashinvest.stashchallenge.listing.main;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import com.stashinvest.stashchallenge.App;
 import com.stashinvest.stashchallenge.R;
 import com.stashinvest.stashchallenge.listing.viewmodel.BaseViewModel;
+import com.stashinvest.stashchallenge.listing.viewmodel.ViewModelAdapter;
 import com.stashinvest.stashchallenge.util.SpaceItemDecoration;
 import com.stashinvest.stashchallenge.util.ViewUtility;
 
@@ -40,15 +41,19 @@ public class MainFragment extends Fragment implements MainPresenter.View {
 
     @Inject
     ViewModelAdapter adapter;
+
     @Inject
     MainPresenter presenter;
 
     @BindView(R.id.main_fragment_root)
     View rootView;
+
     @BindView(R.id.search_phrase)
     EditText searchView;
+
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
 
@@ -62,7 +67,7 @@ public class MainFragment extends Fragment implements MainPresenter.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        App.getInstance().getAppComponent().inject(this);
+        setUpDagger();
     }
 
     @Nullable
@@ -75,11 +80,18 @@ public class MainFragment extends Fragment implements MainPresenter.View {
         return view;
     }
 
+    private void setUpDagger() {
+        App.getInstance().getAppComponent().inject(this);
+    }
+
     private void setUpPresenter() {
         presenter.setView(this);
     }
 
     private void setUpViews() {
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), getResources().getInteger(R.integer.list_span)));
+        recyclerView.addItemDecoration(new SpaceItemDecoration(space, space, space, space));
+        recyclerView.setAdapter(adapter);
         searchView.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 presenter.search(getSearchKeyword());
@@ -87,19 +99,15 @@ public class MainFragment extends Fragment implements MainPresenter.View {
             }
             return false;
         });
-
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), getResources().getInteger(R.integer.list_span)));
-        recyclerView.addItemDecoration(new SpaceItemDecoration(space, space, space, space));
-        recyclerView.setAdapter(adapter);
     }
 
     @Override
-    public void showLoadingIndicator(boolean visible) {
+    public void displayLoadingIndicator(boolean visible) {
         progressBar.setVisibility(visible ? VISIBLE : GONE);
     }
 
     @Override
-    public void onResponse(List<BaseViewModel> images) {
+    public void displayImages(List<BaseViewModel> images) {
         adapter.setViewModels(images);
     }
 
@@ -112,12 +120,6 @@ public class MainFragment extends Fragment implements MainPresenter.View {
         snackbar.show();
     }
 
-//    @Override
-//    public void onImageLongPress(String imageId, String imageUrl) {
-//        PopUpDialogActivity fragment = PopUpDialogActivity.newInstance(imageId, imageUrl);
-//        fragment.show(getFragmentManager(), "Image " + imageId);
-//    }
-
     @NonNull
     private String getSearchKeyword() {
         return searchView == null ? EMPTY : searchView.getText().toString();
@@ -128,10 +130,11 @@ public class MainFragment extends Fragment implements MainPresenter.View {
         ViewUtility.hideKeyboard(rootView);
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        presenter.reset();
+        presenter = null;
     }
 }

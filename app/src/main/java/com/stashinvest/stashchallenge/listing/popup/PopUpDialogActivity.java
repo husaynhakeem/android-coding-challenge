@@ -55,17 +55,12 @@ public class PopUpDialogActivity extends AppCompatActivity implements PopUpDialo
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(R.style.AppTheme_Dialog);
-//        getWindow().setBackgroundDrawable(new ColorDrawable(0x7000000));
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dialog_popup);
+        setContentView(R.layout.activity_popup_dialog);
         unbinder = ButterKnife.bind(this);
         setupDagger();
         setUpPresenter();
         setUpViews();
-    }
-
-    private void setUpViews() {
-        ViewCompat.setTransitionName(popupImageView, getIntent().getStringExtra(IMAGE_ID));
     }
 
     private void setupDagger() {
@@ -79,6 +74,10 @@ public class PopUpDialogActivity extends AppCompatActivity implements PopUpDialo
         if (extras == null || !extras.containsKey(IMAGE_ID) || !extras.containsKey(IMAGE_URL))
             onError();
         presenter.start(extras.getString(IMAGE_ID), extras.getString(IMAGE_URL));
+    }
+
+    private void setUpViews() {
+        ViewCompat.setTransitionName(popupImageView, getIntent().getStringExtra(IMAGE_ID));
     }
 
     @Override

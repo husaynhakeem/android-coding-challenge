@@ -1,4 +1,4 @@
-package com.stashinvest.stashchallenge.listing;
+package com.stashinvest.stashchallenge.listing.main;
 
 import com.stashinvest.stashchallenge.api.GettyImageService;
 import com.stashinvest.stashchallenge.api.model.ImageResponse;
@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 
-public class GetImagesUseCase {
+class GetImagesUseCase {
 
     private final GettyImageService gettyImageService;
 

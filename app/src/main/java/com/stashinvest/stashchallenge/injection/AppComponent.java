@@ -1,8 +1,8 @@
 package com.stashinvest.stashchallenge.injection;
 
 import com.stashinvest.stashchallenge.App;
-import com.stashinvest.stashchallenge.listing.MainActivity;
-import com.stashinvest.stashchallenge.listing.MainFragment;
+import com.stashinvest.stashchallenge.listing.main.MainActivity;
+import com.stashinvest.stashchallenge.listing.main.MainFragment;
 import com.stashinvest.stashchallenge.listing.popup.PopUpDialogActivity;
 
 import javax.inject.Singleton;
@@ -10,7 +10,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {AppModule.class, NetworkModule.class, ListingModule.class})
+@Component(modules = {AppModule.class, NetworkModule.class})
 public interface AppComponent {
     void inject(App app);
 

@@ -1,4 +1,4 @@
-package com.stashinvest.stashchallenge.listing;
+package com.stashinvest.stashchallenge.listing.main;
 
 import android.util.Log;
 
@@ -11,6 +11,8 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 class MainPresenter {
@@ -19,7 +21,9 @@ class MainPresenter {
 
     private final GetImagesUseCase getImagesUseCase;
     private final GettyImageFactory gettyImageFactory;
+
     private View view;
+    private CompositeDisposable compositeDisposable;
 
     @Inject
     MainPresenter(GetImagesUseCase getImagesUseCase, GettyImageFactory gettyImageFactory) {
@@ -33,38 +37,53 @@ class MainPresenter {
 
     void search(String keyword) {
         view.hideKeyboard();
-        view.showLoadingIndicator(true);
-        getImagesUseCase.getImages(keyword)
+        view.displayLoadingIndicator(true);
+
+        reInitializeCompositeDisposable();
+
+        Disposable disposable = getImagesUseCase.getImages(keyword)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onResponse, this::onFailure);
+        compositeDisposable.add(disposable);
+    }
+
+    private void reInitializeCompositeDisposable() {
+        reset();
+        compositeDisposable = new CompositeDisposable();
     }
 
     private void onResponse(ImageResponse imageResponse) {
-        Observable.just(imageResponse.getImages())
+        Disposable disposable = Observable.just(imageResponse.getImages())
                 .flatMapIterable(images -> images)
                 .map(image -> (BaseViewModel) gettyImageFactory.createGettyImageViewModel(image))
                 .toList()
                 .subscribe(this::onImagesReady, this::onFailure);
+        compositeDisposable.add(disposable);
     }
 
     private void onImagesReady(List<BaseViewModel> gettyImageViewModels) {
-        view.showLoadingIndicator(false);
-        view.onResponse(gettyImageViewModels);
+        view.displayLoadingIndicator(false);
+        view.displayImages(gettyImageViewModels);
     }
 
     private void onFailure(Throwable throwable) {
-        view.showLoadingIndicator(false);
+        view.displayLoadingIndicator(false);
         view.onFailure();
-        Log.e(TAG, "Error while fetching the images: " + throwable.getMessage());
+        Log.e(TAG, "Error while loading the images: " + throwable.getMessage());
+    }
+
+    void reset() {
+        if (compositeDisposable != null && !compositeDisposable.isDisposed())
+            compositeDisposable.dispose();
     }
 
     interface View {
         void hideKeyboard();
 
-        void showLoadingIndicator(boolean visible);
+        void displayLoadingIndicator(boolean visible);
 
-        void onResponse(List<BaseViewModel> images);
+        void displayImages(List<BaseViewModel> images);
 
         void onFailure();
     }

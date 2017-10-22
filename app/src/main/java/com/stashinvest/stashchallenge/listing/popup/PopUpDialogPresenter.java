@@ -19,7 +19,6 @@ import io.reactivex.schedulers.Schedulers;
 public class PopUpDialogPresenter {
 
     private static final String TAG = PopUpDialogPresenter.class.getSimpleName();
-    private static final String EMPTY = "";
     private static final int NUMBER_OF_SIMILAR_ADS_TO_DISPLAY = 3;
     private static final int FIRST_METADATA = 0;
 
@@ -60,17 +59,14 @@ public class PopUpDialogPresenter {
     }
 
     private void onMetadataLoaded(MetadataResponse metadataResponse) {
-        String title = EMPTY;
-        String artist = EMPTY;
         try {
             Metadata metadata = metadataResponse.getMetadata().get(FIRST_METADATA);
-            title = metadata.getTitle();
-            artist = metadata.getArtist();
+            view.displayImageTitle(metadata.getTitle());
+            view.displayImageArtist(metadata.getArtist());
         } catch (NullPointerException | IndexOutOfBoundsException e) {
+            view.onError();
             e.printStackTrace();
         }
-        view.displayImageTitle(title);
-        view.displayImageArtist(artist);
     }
 
     private void loadSimilarImages(String imageId) {
@@ -84,8 +80,8 @@ public class PopUpDialogPresenter {
     private void onSimilarImagesLoaded(ImageResponse imageResponse) {
         List<ImageResult> images = imageResponse.getImages();
         int numberOfSimilarImages = Math.min(imageResponse.getResultCount(), NUMBER_OF_SIMILAR_ADS_TO_DISPLAY);
-        int index = 0;
 
+        int index = 0;
         while (index < numberOfSimilarImages) {
             view.displaySimilarImage(index, images.get(index).getThumbUri());
             index++;

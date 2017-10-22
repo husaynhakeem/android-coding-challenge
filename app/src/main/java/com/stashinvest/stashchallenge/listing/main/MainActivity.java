@@ -1,4 +1,4 @@
-package com.stashinvest.stashchallenge.listing;
+package com.stashinvest.stashchallenge.listing.main;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

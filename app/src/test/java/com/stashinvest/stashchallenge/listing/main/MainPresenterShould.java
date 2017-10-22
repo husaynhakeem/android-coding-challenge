@@ -1,4 +1,4 @@
-package com.stashinvest.stashchallenge.listing;
+package com.stashinvest.stashchallenge.listing.main;
 
 import com.stashinvest.stashchallenge.api.model.ImageResponse;
 
@@ -52,7 +52,7 @@ public class MainPresenterShould {
         mainPresenter.search(ANY_KEYWORD);
 
         verify(view).hideKeyboard();
-        verify(view).showLoadingIndicator(true);
+        verify(view).displayLoadingIndicator(true);
     }
 
     private ImageResponse anyImageResponse() {

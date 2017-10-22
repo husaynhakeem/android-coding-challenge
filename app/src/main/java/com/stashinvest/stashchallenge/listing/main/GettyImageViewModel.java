@@ -1,18 +1,17 @@
-package com.stashinvest.stashchallenge.listing.viewmodel;
+package com.stashinvest.stashchallenge.listing.main;
 
 import android.view.View;
 
 import com.stashinvest.stashchallenge.R;
 import com.stashinvest.stashchallenge.api.model.ImageResult;
-import com.stashinvest.stashchallenge.listing.GettyImageViewHolder;
+import com.stashinvest.stashchallenge.listing.viewmodel.BaseViewModel;
+import com.stashinvest.stashchallenge.listing.viewmodel.ViewModelType;
 
-import static com.stashinvest.stashchallenge.listing.viewmodel.ViewModelType.GETTY_IMAGE;
-
-public class GettyImageViewModel extends BaseViewModel<GettyImageViewHolder> {
+class GettyImageViewModel extends BaseViewModel<GettyImageViewHolder> {
     private final ImageResult imageResult;
 
-    public GettyImageViewModel(ImageResult imageResult) {
-        super(R.layout.getty_image_layout);
+    GettyImageViewModel(ImageResult imageResult) {
+        super(R.layout.layout_getty_image);
         this.imageResult = imageResult;
     }
 
@@ -28,6 +27,6 @@ public class GettyImageViewModel extends BaseViewModel<GettyImageViewHolder> {
 
     @Override
     public ViewModelType getViewType() {
-        return GETTY_IMAGE;
+        return ViewModelType.GETTY_IMAGE;
     }
 }

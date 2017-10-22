@@ -1,7 +1,6 @@
-package com.stashinvest.stashchallenge.listing;
+package com.stashinvest.stashchallenge.listing.main;
 
 import com.stashinvest.stashchallenge.api.model.ImageResult;
-import com.stashinvest.stashchallenge.listing.viewmodel.GettyImageViewModel;
 
 import javax.inject.Inject;
 
@@ -11,7 +10,7 @@ class GettyImageFactory {
     GettyImageFactory() {
     }
 
-    public GettyImageViewModel createGettyImageViewModel(ImageResult imageResult) {
+    GettyImageViewModel createGettyImageViewModel(ImageResult imageResult) {
         return new GettyImageViewModel(imageResult);
     }
 }
