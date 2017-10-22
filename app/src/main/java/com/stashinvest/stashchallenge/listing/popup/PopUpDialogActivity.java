@@ -144,5 +144,6 @@ public class PopUpDialogActivity extends AppCompatActivity implements PopUpDialo
         if (unbinder != null)
             unbinder.unbind();
         presenter.reset();
+        presenter = null;
     }
 }

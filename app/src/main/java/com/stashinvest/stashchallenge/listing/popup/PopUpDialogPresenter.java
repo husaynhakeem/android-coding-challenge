@@ -27,7 +27,7 @@ public class PopUpDialogPresenter {
     private final GetSimilarImagesUseCase getSimilarImagesUseCase;
 
     private View view;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private CompositeDisposable compositeDisposable;
 
     @Inject
     public PopUpDialogPresenter(GetImageMetadataUseCase getImageMetadataUseCase, GetSimilarImagesUseCase getSimilarImagesUseCase) {
@@ -40,6 +40,7 @@ public class PopUpDialogPresenter {
     }
 
     void start(String imageId, String imageUrl) {
+        compositeDisposable = new CompositeDisposable();
         displayImage(imageUrl);
         loadImageMetadata(imageId);
         loadSimilarImages(imageId);
