@@ -2,6 +2,7 @@ package com.stashinvest.stashchallenge.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ImageResult {
@@ -9,6 +10,12 @@ public class ImageResult {
     private String title;
     @SerializedName("display_sizes")
     private List<DisplaySize> displaySizes;
+
+    public ImageResult(String id, String title) {
+        this.id = id;
+        this.title = title;
+        this.displaySizes = new ArrayList<>();
+    }
 
     public String getId() {
         return id;

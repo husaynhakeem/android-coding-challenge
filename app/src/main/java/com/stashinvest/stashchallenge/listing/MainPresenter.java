@@ -40,7 +40,6 @@ class MainPresenter {
                 .subscribe(this::onResponse, this::onFailure);
     }
 
-    private int index = 0;
     private void onResponse(ImageResponse imageResponse) {
         Observable.just(imageResponse.getImages())
                 .flatMapIterable(images -> images)
@@ -68,7 +67,5 @@ class MainPresenter {
         void onResponse(List<BaseViewModel> images);
 
         void onFailure();
-
-        void onImageLongPress(String imageId, String imageUrl);
     }
 }

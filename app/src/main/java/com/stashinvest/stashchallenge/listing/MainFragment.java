@@ -16,7 +16,6 @@ import android.widget.ProgressBar;
 
 import com.stashinvest.stashchallenge.App;
 import com.stashinvest.stashchallenge.R;
-import com.stashinvest.stashchallenge.listing.popup.PopUpDialogFragment;
 import com.stashinvest.stashchallenge.listing.viewmodel.BaseViewModel;
 import com.stashinvest.stashchallenge.util.SpaceItemDecoration;
 import com.stashinvest.stashchallenge.util.ViewUtility;
@@ -114,11 +113,11 @@ public class MainFragment extends Fragment implements MainPresenter.View {
         snackbar.show();
     }
 
-    @Override
-    public void onImageLongPress(String imageId, String imageUrl) {
-        PopUpDialogFragment fragment = PopUpDialogFragment.newInstance(imageId, imageUrl);
-        fragment.show(getFragmentManager(), "Image " + imageId);
-    }
+//    @Override
+//    public void onImageLongPress(String imageId, String imageUrl) {
+//        PopUpDialogFragment fragment = PopUpDialogFragment.newInstance(imageId, imageUrl);
+//        fragment.show(getFragmentManager(), "Image " + imageId);
+//    }
 
     @NonNull
     private String getSearchKeyword() {
