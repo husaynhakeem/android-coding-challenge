@@ -7,25 +7,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:orientation="vertical">
 
         <!--Image-->
         <ImageView
             android:id="@+id/popup_image_view"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
             android:contentDescription="@string/getty_image_description"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitCenter" />
 
         <!--Title-->
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             android:paddingTop="8dp"
             android:text="@string/title_placeholder"
             android:textSize="16sp"
@@ -36,7 +35,8 @@
             android:id="@+id/tv_artist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             android:text="@string/artist_placeholder"
             android:textSize="16sp" />
 
@@ -45,8 +45,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             android:paddingTop="16dp"
             android:text="@string/title_similar_images"
             android:textSize="16sp"
@@ -56,6 +56,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="112dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -71,8 +74,8 @@
                 android:id="@+id/similar_image_view2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
                 android:layout_weight="1"
                 android:contentDescription="@string/similar_image_description"
                 android:scaleType="centerCrop"

@@ -130,8 +130,8 @@ public class MainFragment extends Fragment implements MainPresenter.View {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         unbinder.unbind();
         presenter.reset();
         presenter = null;

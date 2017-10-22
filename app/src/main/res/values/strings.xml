@@ -7,7 +7,7 @@
     <string name="search_hint">Search Phrase</string>
     <string name="artist_format">by %1$s</string>
 
-    <string name="title_similar_images">Similar images</string>
+    <string name="title_similar_images">Related</string>
     <string name="title_placeholder">Title loading..</string>
     <string name="artist_placeholder">Artist name loading..</string>
 
