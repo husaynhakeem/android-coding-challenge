@@ -75,7 +75,4 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-
-    // Image Peek
-    compile 'com.github.shalskar:PeekAndPop:1.1.0'
 }

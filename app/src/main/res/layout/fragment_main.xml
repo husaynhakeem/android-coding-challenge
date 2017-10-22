@@ -11,7 +11,7 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="@dimen/space_medium">
 
             <EditText
                 android:id="@+id/search_phrase"

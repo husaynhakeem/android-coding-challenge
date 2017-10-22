@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="image_space">1dp</dimen>
+    <dimen name="similar_images_layout_height">112dp</dimen>
+    <dimen name="getty_image_layout_height">144dp</dimen>
+
+    <dimen name="space_tiny">4dp</dimen>
+    <dimen name="space_smaller">8dp</dimen>
+    <dimen name="space_small">12dp</dimen>
+    <dimen name="space_medium">16dp</dimen>
+    <dimen name="space_big">24dp</dimen>
+    <dimen name="space_bigger">36dp</dimen>
+
+    <dimen name="text_medium">16sp</dimen>
 </resources>

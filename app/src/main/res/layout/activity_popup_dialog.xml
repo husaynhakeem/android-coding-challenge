@@ -23,11 +23,11 @@
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:paddingTop="8dp"
+            android:paddingLeft="@dimen/space_small"
+            android:paddingRight="@dimen/space_small"
+            android:paddingTop="@dimen/space_smaller"
             android:text="@string/title_placeholder"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_medium"
             android:textStyle="bold" />
 
         <!--Artist-->
@@ -35,30 +35,30 @@
             android:id="@+id/tv_artist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
+            android:paddingLeft="@dimen/space_small"
+            android:paddingRight="@dimen/space_small"
             android:text="@string/artist_placeholder"
-            android:textSize="16sp" />
+            android:textSize="@dimen/text_medium" />
 
         <!--Similar images title-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:paddingTop="16dp"
+            android:paddingBottom="@dimen/space_tiny"
+            android:paddingLeft="@dimen/space_small"
+            android:paddingRight="@dimen/space_small"
+            android:paddingTop="@dimen/space_medium"
             android:text="@string/title_similar_images"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_medium"
             android:textStyle="bold" />
 
         <!--Similar images-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="112dp"
-            android:layout_marginBottom="12dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
+            android:layout_height="@dimen/similar_images_layout_height"
+            android:layout_marginBottom="@dimen/space_small"
+            android:layout_marginLeft="@dimen/space_small"
+            android:layout_marginRight="@dimen/space_small"
             android:orientation="horizontal">
 
             <ImageView
@@ -74,8 +74,8 @@
                 android:id="@+id/similar_image_view2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
+                android:layout_marginLeft="@dimen/space_small"
+                android:layout_marginRight="@dimen/space_small"
                 android:layout_weight="1"
                 android:contentDescription="@string/similar_image_description"
                 android:scaleType="centerCrop"

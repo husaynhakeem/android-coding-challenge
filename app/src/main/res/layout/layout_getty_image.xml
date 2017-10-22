@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="144dp"
+    android:layout_height="@dimen/getty_image_layout_height"
     tools:background="@android:color/holo_blue_light">
 
     <ImageView
