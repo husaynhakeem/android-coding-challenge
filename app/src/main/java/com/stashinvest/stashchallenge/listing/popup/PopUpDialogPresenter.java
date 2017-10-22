@@ -18,7 +18,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class PopUpDialogPresenter {
 
-    private static final String TAG = PopUpDialogPresenter.class.getSimpleName();
     private static final int NUMBER_OF_SIMILAR_ADS_TO_DISPLAY = 3;
     private static final int FIRST_METADATA = 0;
 
@@ -29,7 +28,7 @@ public class PopUpDialogPresenter {
     private CompositeDisposable compositeDisposable;
 
     @Inject
-    public PopUpDialogPresenter(GetImageMetadataUseCase getImageMetadataUseCase, GetSimilarImagesUseCase getSimilarImagesUseCase) {
+    PopUpDialogPresenter(GetImageMetadataUseCase getImageMetadataUseCase, GetSimilarImagesUseCase getSimilarImagesUseCase) {
         this.getImageMetadataUseCase = getImageMetadataUseCase;
         this.getSimilarImagesUseCase = getSimilarImagesUseCase;
     }
@@ -90,7 +89,8 @@ public class PopUpDialogPresenter {
 
     private void onError(Throwable throwable) {
         view.onError();
-        Log.e(TAG, "Error while loading popUpDialog data: " + throwable.getMessage());
+        Log.e(PopUpDialogPresenter.class.getSimpleName(),
+                "Error while loading popUpDialog data: " + throwable.getMessage());
     }
 
     void reset() {

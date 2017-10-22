@@ -1,17 +1,20 @@
 <resources>
-    <string name="app_name">StashChallenge</string>
-
+    <string name="app_name">Stash Challenge - Husayn Hakeem</string>
 
     <string name="getty_base_url">https://api.gettyimages.com/v3/</string>
     <string name="getty_api_key">5g2jfrdtcee95ang4rrj8ytk</string>
 
     <string name="search_hint">Search Phrase</string>
     <string name="artist_format">by %1$s</string>
-    <string name="retry">Retry</string>
-    <string name="images_response_error">An error occurred.</string>
-    <string name="popup_dialog_image_description">Image</string>
-    <string name="popup_dialog_similar_image_description">Similar image</string>
+
     <string name="title_similar_images">Similar images</string>
     <string name="title_placeholder">Title loading..</string>
-    <string name="artist_loading">Artist name loading..</string>
+    <string name="artist_placeholder">Artist name loading..</string>
+
+    <string name="retry">Retry</string>
+    <string name="images_response_error">An error occurred.</string>
+
+    <string name="getty_image_description">Getty image</string>
+    <string name="similar_image_description">Similar image</string>
+
 </resources>

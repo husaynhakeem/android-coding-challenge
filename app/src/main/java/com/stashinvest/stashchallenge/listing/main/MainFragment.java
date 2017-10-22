@@ -45,9 +45,6 @@ public class MainFragment extends Fragment implements MainPresenter.View {
     @Inject
     MainPresenter presenter;
 
-    @BindView(R.id.main_fragment_root)
-    View rootView;
-
     @BindView(R.id.search_phrase)
     EditText searchView;
 
@@ -115,7 +112,9 @@ public class MainFragment extends Fragment implements MainPresenter.View {
     public void onFailure() {
         if (snackbar != null && snackbar.isShown())
             snackbar.dismiss();
-        snackbar = Snackbar.make(rootView, getContext().getString(R.string.images_response_error), Snackbar.LENGTH_INDEFINITE);
+        snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content),
+                getContext().getString(R.string.images_response_error),
+                Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction(getContext().getString(R.string.retry), view -> presenter.search(getSearchKeyword()));
         snackbar.show();
     }
@@ -127,7 +126,7 @@ public class MainFragment extends Fragment implements MainPresenter.View {
 
     @Override
     public void hideKeyboard() {
-        ViewUtility.hideKeyboard(rootView);
+        ViewUtility.hideKeyboard(getActivity().findViewById(android.R.id.content));
     }
 
     @Override

@@ -7,16 +7,16 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 
-class GetImagesUseCase {
+class LoadGettyImagesUseCase {
 
     private final GettyImageService gettyImageService;
 
     @Inject
-    public GetImagesUseCase(GettyImageService gettyImageService) {
+    LoadGettyImagesUseCase(GettyImageService gettyImageService) {
         this.gettyImageService = gettyImageService;
     }
 
-    Single<ImageResponse> getImages(String keyword) {
+    Single<ImageResponse> loadImages(String keyword) {
         return gettyImageService.searchImages(keyword);
     }
 }

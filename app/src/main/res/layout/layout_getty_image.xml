@@ -9,6 +9,7 @@
         android:id="@+id/popup_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:contentDescription="@string/getty_image_description"
         android:scaleType="centerCrop" />
 
 </FrameLayout>

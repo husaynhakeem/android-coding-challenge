@@ -1,7 +1,6 @@
 package com.stashinvest.stashchallenge.listing.main;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -24,43 +23,40 @@ import static com.stashinvest.stashchallenge.listing.popup.PopUpDialogActivity.I
 class GettyImageViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.popup_image_view)
-    ImageView imageView;
-
-    private Context context;
+    ImageView popupImageView;
 
     GettyImageViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-        this.context = itemView.getContext();
     }
 
     void bind(ImageResult imageResult) {
         Picasso.with(itemView.getContext())
                 .load(imageResult.getThumbUri())
-                .into(imageView);
+                .into(popupImageView);
 
-        ViewCompat.setTransitionName(imageView, imageResult.getId());
+        ViewCompat.setTransitionName(popupImageView, imageResult.getId());
         itemView.setOnLongClickListener(view -> onLongClick(imageResult.getId(), imageResult.getThumbUri()));
     }
 
     private boolean onLongClick(String imageId, String imageUrl) {
-        Intent intent = new Intent(context, PopUpDialogActivity.class);
-        intent.putExtras(popupDialogExtraArguments(imageId, imageUrl));
-        context.startActivity(intent, popupDialogAnimationBundle());
+        Intent intent = new Intent(itemView.getContext(), PopUpDialogActivity.class);
+        intent.putExtras(popupDialogArgumentsBundle(imageId, imageUrl));
+        itemView.getContext().startActivity(intent, popupDialogAnimationBundle());
         return true;
     }
 
-    private Bundle popupDialogExtraArguments(String imageId, String imageUrl) {
-        Bundle extras = new Bundle();
-        extras.putString(IMAGE_ID, imageId);
-        extras.putString(IMAGE_URL, imageUrl);
-        return extras;
+    private Bundle popupDialogArgumentsBundle(String imageId, String imageUrl) {
+        Bundle arguments = new Bundle();
+        arguments.putString(IMAGE_ID, imageId);
+        arguments.putString(IMAGE_URL, imageUrl);
+        return arguments;
     }
 
     private Bundle popupDialogAnimationBundle() {
         return ActivityOptionsCompat.makeSceneTransitionAnimation(
-                (Activity) context,
-                imageView,
-                ViewCompat.getTransitionName(imageView)).toBundle();
+                (Activity) itemView.getContext(),
+                popupImageView,
+                ViewCompat.getTransitionName(popupImageView)).toBundle();
     }
 }

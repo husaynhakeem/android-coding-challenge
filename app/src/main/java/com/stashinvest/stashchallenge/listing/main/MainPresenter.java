@@ -19,15 +19,15 @@ class MainPresenter {
 
     private static final String TAG = MainPresenter.class.getName();
 
-    private final GetImagesUseCase getImagesUseCase;
+    private final LoadGettyImagesUseCase loadGettyImagesUseCase;
     private final GettyImageFactory gettyImageFactory;
 
     private View view;
     private CompositeDisposable compositeDisposable;
 
     @Inject
-    MainPresenter(GetImagesUseCase getImagesUseCase, GettyImageFactory gettyImageFactory) {
-        this.getImagesUseCase = getImagesUseCase;
+    MainPresenter(LoadGettyImagesUseCase getImagesUseCase, GettyImageFactory gettyImageFactory) {
+        this.loadGettyImagesUseCase = getImagesUseCase;
         this.gettyImageFactory = gettyImageFactory;
     }
 
@@ -41,10 +41,10 @@ class MainPresenter {
 
         reInitializeCompositeDisposable();
 
-        Disposable disposable = getImagesUseCase.getImages(keyword)
+        Disposable disposable = loadGettyImagesUseCase.loadImages(keyword)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onResponse, this::onFailure);
+                .subscribe(this::onImagesInitiallyLoaded, this::onFailure);
         compositeDisposable.add(disposable);
     }
 
@@ -53,7 +53,7 @@ class MainPresenter {
         compositeDisposable = new CompositeDisposable();
     }
 
-    private void onResponse(ImageResponse imageResponse) {
+    private void onImagesInitiallyLoaded(ImageResponse imageResponse) {
         Disposable disposable = Observable.just(imageResponse.getImages())
                 .flatMapIterable(images -> images)
                 .map(image -> (BaseViewModel) gettyImageFactory.createGettyImageViewModel(image))

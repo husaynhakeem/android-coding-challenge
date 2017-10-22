@@ -15,9 +15,6 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by husaynhakeem on 10/22/17.
- */
 public class MainPresenterShould {
 
     private static final String ANY_KEYWORD = "any_keyword";
@@ -26,7 +23,7 @@ public class MainPresenterShould {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    GetImagesUseCase getImagesUseCase;
+    LoadGettyImagesUseCase getImagesUseCase;
 
     @Mock
     GettyImageFactory gettyImageFactory;
@@ -47,7 +44,7 @@ public class MainPresenterShould {
 
     @Test
     public void hideKeyboardAndShowLoadingIndicator_whenSearchTriggered() throws Exception {
-        when(getImagesUseCase.getImages(anyString())).thenReturn(Single.just(anyImageResponse()));
+        when(getImagesUseCase.loadImages(anyString())).thenReturn(Single.just(anyImageResponse()));
 
         mainPresenter.search(ANY_KEYWORD);
 
