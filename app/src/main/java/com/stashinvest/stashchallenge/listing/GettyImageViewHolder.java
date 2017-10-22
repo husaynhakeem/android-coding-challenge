@@ -1,9 +1,11 @@
 package com.stashinvest.stashchallenge.listing;
 
+import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,13 +13,15 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import com.stashinvest.stashchallenge.R;
 import com.stashinvest.stashchallenge.api.model.ImageResult;
-import com.stashinvest.stashchallenge.listing.popup.PopUpDialogFragment;
+import com.stashinvest.stashchallenge.listing.popup.PopUpDialogActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.stashinvest.stashchallenge.listing.popup.PopUpDialogActivity.IMAGE_ID;
+import static com.stashinvest.stashchallenge.listing.popup.PopUpDialogActivity.IMAGE_URL;
+
 public class GettyImageViewHolder extends RecyclerView.ViewHolder {
-    private static final String TAG = "dialog popup";
     @BindView(R.id.popup_image_view)
     ImageView imageView;
 
@@ -34,23 +38,24 @@ public class GettyImageViewHolder extends RecyclerView.ViewHolder {
                 .load(imageResult.getThumbUri())
                 .into(imageView);
 
-        itemView.setOnLongClickListener(view -> onLongClick(view, imageResult.getId(), imageResult.getThumbUri()));
+        ViewCompat.setTransitionName(imageView, imageResult.getId());
+        itemView.setOnLongClickListener(view -> onLongClick(imageResult.getId(), imageResult.getThumbUri()));
     }
 
-    private boolean onLongClick(View view, String imageId, String imageUrl) {
-        PopUpDialogFragment fragment = PopUpDialogFragment.newInstance(imageId, imageUrl);
+    private boolean onLongClick(String imageId, String imageUrl) {
+        Intent intent = new Intent(context, PopUpDialogActivity.class);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            view.setTransitionName(imageId);
-            ((AppCompatActivity) view.getContext()).getSupportFragmentManager().beginTransaction()
-                    .addSharedElement(view, ViewCompat.getTransitionName(view))
-                    .addToBackStack(TAG)
-                    .add(fragment, TAG)
-                    .commit();
+        Bundle extras = new Bundle();
+        extras.putString(IMAGE_ID, imageId);
+        extras.putString(IMAGE_URL, imageUrl);
+        intent.putExtras(extras);
 
-        } else {
-            fragment.show(((AppCompatActivity) itemView.getContext()).getSupportFragmentManager(), TAG);
-        }
+        Bundle animationBundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                (Activity) context,
+                imageView,
+                ViewCompat.getTransitionName(imageView)).toBundle();
+
+        context.startActivity(intent, animationBundle);
 
         return true;
     }

@@ -34,7 +34,6 @@ import static android.view.View.VISIBLE;
 
 public class MainFragment extends Fragment implements MainPresenter.View {
     public static final String EMPTY = "";
-    public static final int SPAN_COUNT = 3;
 
     @BindDimen(R.dimen.image_space)
     int space;
@@ -89,7 +88,7 @@ public class MainFragment extends Fragment implements MainPresenter.View {
             return false;
         });
 
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), SPAN_COUNT));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), getResources().getInteger(R.integer.list_span)));
         recyclerView.addItemDecoration(new SpaceItemDecoration(space, space, space, space));
         recyclerView.setAdapter(adapter);
     }
@@ -115,7 +114,7 @@ public class MainFragment extends Fragment implements MainPresenter.View {
 
 //    @Override
 //    public void onImageLongPress(String imageId, String imageUrl) {
-//        PopUpDialogFragment fragment = PopUpDialogFragment.newInstance(imageId, imageUrl);
+//        PopUpDialogActivity fragment = PopUpDialogActivity.newInstance(imageId, imageUrl);
 //        fragment.show(getFragmentManager(), "Image " + imageId);
 //    }
 

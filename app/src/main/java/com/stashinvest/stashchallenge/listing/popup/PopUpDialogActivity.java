@@ -3,10 +3,8 @@ package com.stashinvest.stashchallenge.listing.popup;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,10 +19,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class PopUpDialogFragment extends DialogFragment implements PopUpDialogPresenter.View {
+public class PopUpDialogActivity extends AppCompatActivity implements PopUpDialogPresenter.View {
 
-    private static final String IMAGE_ID = "image_id";
-    private static final String IMAGE_URL = "image_url";
+    public static final String IMAGE_ID = "image_id";
+    public static final String IMAGE_URL = "image_url";
 
     private static final int FIRST_SIMILAR_IMAGE_INDEX = 0;
     private static final int SECOND_SIMILAR_IMAGE_INDEX = 1;
@@ -36,14 +34,14 @@ public class PopUpDialogFragment extends DialogFragment implements PopUpDialogPr
     @Inject
     PopUpDialogPresenter presenter;
 
-    @BindView(R.id.popup_dialog_root)
-    View rootView;
-
     @BindView(R.id.popup_image_view)
     ImageView popupImageView;
 
-    @BindView(R.id.title_view)
+    @BindView(R.id.tv_title)
     TextView titleTextView;
+
+    @BindView(R.id.tv_artist)
+    TextView artistTextView;
 
     @BindView(R.id.similar_image_view1)
     ImageView firstSimilarImageView;
@@ -54,54 +52,55 @@ public class PopUpDialogFragment extends DialogFragment implements PopUpDialogPr
     @BindView(R.id.similar_image_view3)
     ImageView thirdSimilarImageView;
 
-    public static PopUpDialogFragment newInstance(String imageId, String imageUrl) {
-        PopUpDialogFragment popUpDialogFragment = new PopUpDialogFragment();
-        Bundle arguments = new Bundle();
-        arguments.putString(IMAGE_ID, imageId);
-        arguments.putString(IMAGE_URL, imageUrl);
-        popUpDialogFragment.setArguments(arguments);
-        return popUpDialogFragment;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme_Dialog);
+//        getWindow().setBackgroundDrawable(new ColorDrawable(0x7000000));
         super.onCreate(savedInstanceState);
-        App.getInstance().getAppComponent().inject(this);
+        setContentView(R.layout.activity_dialog_popup);
+        unbinder = ButterKnife.bind(this);
+        setupDagger();
+        setUpPresenter();
+        setUpViews();
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dialog_popup, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        setUpPresenter();
-        return view;
+    private void setUpViews() {
+        ViewCompat.setTransitionName(popupImageView, getIntent().getStringExtra(IMAGE_ID));
+    }
+
+    private void setupDagger() {
+        App.getInstance().getAppComponent().inject(this);
     }
 
     @SuppressWarnings("ConstantConditions")
     private void setUpPresenter() {
         presenter.setView(this);
-        Bundle arguments = getArguments();
-        if (arguments == null || !arguments.containsKey(IMAGE_ID) || !arguments.containsKey(IMAGE_URL))
+        Bundle extras = getIntent().getExtras();
+        if (extras == null || !extras.containsKey(IMAGE_ID) || !extras.containsKey(IMAGE_URL))
             onError();
-        presenter.start(arguments.getString(IMAGE_ID), arguments.getString(IMAGE_URL));
+        presenter.start(extras.getString(IMAGE_ID), extras.getString(IMAGE_URL));
     }
 
     @Override
     public void hideKeyboard() {
-        ViewUtility.hideKeyboard(rootView);
+        ViewUtility.hideKeyboard(findViewById(android.R.id.content));
     }
 
     @Override
     public void displayImage(String imageUrl) {
-        Picasso.with(getContext())
+        Picasso.with(this)
                 .load(imageUrl)
                 .into(popupImageView);
     }
 
     @Override
-    public void displayImageMetadata(String imageTitle, String imageArtist) {
-        titleTextView.setText(getString(R.string.metadata_title_format, imageTitle, imageArtist));
+    public void displayImageTitle(String imageTitle) {
+        titleTextView.setText(imageTitle);
+    }
+
+    @Override
+    public void displayImageArtist(String imageArtist) {
+        artistTextView.setText(getString(R.string.artist_format, imageArtist));
     }
 
     @Override
@@ -124,7 +123,7 @@ public class PopUpDialogFragment extends DialogFragment implements PopUpDialogPr
             return;
         }
 
-        Picasso.with(getContext())
+        Picasso.with(this)
                 .load(imageUrl)
                 .into(similarImageView);
     }
@@ -134,7 +133,7 @@ public class PopUpDialogFragment extends DialogFragment implements PopUpDialogPr
         if (snackbar != null && snackbar.isShown())
             snackbar.dismiss();
 
-        snackbar = Snackbar.make(rootView, getString(R.string.images_response_error), Snackbar.LENGTH_LONG);
+        snackbar = Snackbar.make(findViewById(android.R.id.content), getString(R.string.images_response_error), Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.retry, view -> setUpPresenter());
         snackbar.show();
     }
@@ -144,5 +143,6 @@ public class PopUpDialogFragment extends DialogFragment implements PopUpDialogPr
         super.onDestroy();
         if (unbinder != null)
             unbinder.unbind();
+        presenter.reset();
     }
 }

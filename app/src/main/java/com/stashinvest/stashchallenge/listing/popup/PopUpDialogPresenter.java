@@ -12,6 +12,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class PopUpDialogPresenter {
@@ -25,6 +27,7 @@ public class PopUpDialogPresenter {
     private final GetSimilarImagesUseCase getSimilarImagesUseCase;
 
     private View view;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
     public PopUpDialogPresenter(GetImageMetadataUseCase getImageMetadataUseCase, GetSimilarImagesUseCase getSimilarImagesUseCase) {
@@ -48,10 +51,11 @@ public class PopUpDialogPresenter {
     }
 
     private void loadImageMetadata(String imageId) {
-        getImageMetadataUseCase.getMetadata(imageId)
+        Disposable disposable = getImageMetadataUseCase.getMetadata(imageId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onMetadataLoaded, this::onError);
+        compositeDisposable.add(disposable);
     }
 
     private void onMetadataLoaded(MetadataResponse metadataResponse) {
@@ -64,14 +68,16 @@ public class PopUpDialogPresenter {
         } catch (NullPointerException | IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
-        view.displayImageMetadata(title, artist);
+        view.displayImageTitle(title);
+        view.displayImageArtist(artist);
     }
 
     private void loadSimilarImages(String imageId) {
-        getSimilarImagesUseCase.getImages(imageId)
+        Disposable disposable = getSimilarImagesUseCase.getImages(imageId)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onSimilarImagesLoaded, this::onError);
+        compositeDisposable.add(disposable);
     }
 
     private void onSimilarImagesLoaded(ImageResponse imageResponse) {
@@ -90,12 +96,19 @@ public class PopUpDialogPresenter {
         Log.e(TAG, "Error while loading popUpDialog data: " + throwable.getMessage());
     }
 
+    void reset() {
+        if (compositeDisposable != null && !compositeDisposable.isDisposed())
+            compositeDisposable.dispose();
+    }
+
     interface View {
         void hideKeyboard();
 
         void displayImage(String imageUrl);
 
-        void displayImageMetadata(String imageTitle, String imageArtist);
+        void displayImageTitle(String imageTitle);
+
+        void displayImageArtist(String imageArtist);
 
         void displaySimilarImage(int index, String imageUrl);
 

@@ -3,7 +3,7 @@ package com.stashinvest.stashchallenge.injection;
 import com.stashinvest.stashchallenge.App;
 import com.stashinvest.stashchallenge.listing.MainActivity;
 import com.stashinvest.stashchallenge.listing.MainFragment;
-import com.stashinvest.stashchallenge.listing.popup.PopUpDialogFragment;
+import com.stashinvest.stashchallenge.listing.popup.PopUpDialogActivity;
 
 import javax.inject.Singleton;
 
@@ -18,5 +18,5 @@ public interface AppComponent {
 
     void inject(MainFragment fragment);
 
-    void inject(PopUpDialogFragment fragment);
+    void inject(PopUpDialogActivity fragment);
 }
