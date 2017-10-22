@@ -19,13 +19,14 @@ import io.reactivex.Single;
 public class TestsHelper {
 
     public static final String ANY_KEYWORD = "any_keyword";
-    public static final String ANY_GETTY_IMAGE_ID = "any_getty_image_id";
-    public static final String ANY_GETTY_IMAGE_URL = "any_getty_image_url";
+
+    public static final String ANY_IMAGE_ID = "any_getty_image_id";
+    public static final String ANY_IMAGE_URL = "any_getty_image_url";
     public static final String ANY_IMAGE_TITLE = "any_image_title";
     public static final String ANY_IMAGE_ARTIST = "any_image_artist";
 
-    public static final String ANY_SIMILAR_IMAGE_ID = "any_similar_image_id";
-    public static final String ANY_SIMILAR_IMAGE_TITLE = "any_similar_image_title";
+    private static final String ANY_SIMILAR_IMAGE_ID = "any_similar_image_id";
+    private static final String ANY_SIMILAR_IMAGE_TITLE = "any_similar_image_title";
     public static final int ANY_SIMILAR_IMAGE_INDEX = 0;
     public static final String ANY_SIMILAR_IMAGE_THUMB_URI = "any_similar_image_thumb_uri";
 
@@ -41,19 +42,12 @@ public class TestsHelper {
         return Single.just(metadataResponse);
     }
 
-    public static Metadata anyMetadata() {
+    private static Metadata anyMetadata() {
         Metadata metadata = new Metadata();
-        metadata.setId(ANY_GETTY_IMAGE_ID);
+        metadata.setId(ANY_IMAGE_ID);
         metadata.setTitle(ANY_IMAGE_TITLE);
         metadata.setArtist(ANY_IMAGE_ARTIST);
         return metadata;
-    }
-
-    public static Single<ImageResponse> anyEmptyImageResponseSingle() {
-        ImageResponse imageResponse = new ImageResponse();
-        imageResponse.setResultCount(0);
-        imageResponse.setImages(null);
-        return Single.just(imageResponse);
     }
 
     public static Single<ImageResponse> anyImageResponseSingle() {
@@ -63,13 +57,13 @@ public class TestsHelper {
         return Single.just(imageResponse);
     }
 
-    public static List<ImageResult> anyImageResult() {
+    private static List<ImageResult> anyImageResult() {
         ImageResult imageResult = new ImageResult(ANY_SIMILAR_IMAGE_ID, ANY_SIMILAR_IMAGE_TITLE);
         imageResult.setDisplaySizes(Collections.singletonList(anyDisplaySize()));
         return Collections.singletonList(imageResult);
     }
 
-    public static DisplaySize anyDisplaySize() {
+    private static DisplaySize anyDisplaySize() {
         DisplaySize displaySize = new DisplaySize();
         displaySize.setName("thumb");
         displaySize.setUri(ANY_SIMILAR_IMAGE_THUMB_URI);

@@ -11,8 +11,8 @@ import org.mockito.junit.MockitoRule;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-import static com.stashinvest.stashchallenge.listing.TestsHelper.ANY_GETTY_IMAGE_ID;
-import static com.stashinvest.stashchallenge.listing.TestsHelper.ANY_GETTY_IMAGE_URL;
+import static com.stashinvest.stashchallenge.listing.TestsHelper.ANY_IMAGE_ID;
+import static com.stashinvest.stashchallenge.listing.TestsHelper.ANY_IMAGE_URL;
 import static com.stashinvest.stashchallenge.listing.TestsHelper.ANY_IMAGE_ARTIST;
 import static com.stashinvest.stashchallenge.listing.TestsHelper.ANY_IMAGE_TITLE;
 import static com.stashinvest.stashchallenge.listing.TestsHelper.ANY_SIMILAR_IMAGE_INDEX;
@@ -50,18 +50,18 @@ public class PopUpDialogPresenterShould {
 
     @Test
     public void hideKeyboardAndDisplayGettyImage_onStart() throws Exception {
-        presenter.displayImage(ANY_GETTY_IMAGE_URL);
+        presenter.displayImage(ANY_IMAGE_URL);
 
         verify(view).hideKeyboard();
-        verify(view).displayImage(ANY_GETTY_IMAGE_URL);
+        verify(view).displayImage(ANY_IMAGE_URL);
     }
 
     @Test
     public void loadMetadata_whenMetadataIsValid() throws Exception {
-        when(getImageMetadataUseCase.getMetadata(ANY_GETTY_IMAGE_ID)).thenReturn(anyMetadataResponseSingle());
+        when(getImageMetadataUseCase.getMetadata(ANY_IMAGE_ID)).thenReturn(anyMetadataResponseSingle());
 
         presenter.setCompositeDisposable(new CompositeDisposable());
-        presenter.loadImageMetadata(ANY_GETTY_IMAGE_ID);
+        presenter.loadImageMetadata(ANY_IMAGE_ID);
 
         verify(view).displayImageTitle(ANY_IMAGE_TITLE);
         verify(view).displayImageArtist(ANY_IMAGE_ARTIST);
@@ -69,20 +69,20 @@ public class PopUpDialogPresenterShould {
 
     @Test
     public void callOnError_whenMetadataResponseHasEmptyMetadata() throws Exception {
-        when(getImageMetadataUseCase.getMetadata(ANY_GETTY_IMAGE_ID)).thenReturn(anyEmptyMetadataResponseSingle());
+        when(getImageMetadataUseCase.getMetadata(ANY_IMAGE_ID)).thenReturn(anyEmptyMetadataResponseSingle());
 
         presenter.setCompositeDisposable(new CompositeDisposable());
-        presenter.loadImageMetadata(ANY_GETTY_IMAGE_ID);
+        presenter.loadImageMetadata(ANY_IMAGE_ID);
 
         verify(view).onError();
     }
 
     @Test
     public void displayOneSimilarImage_whenOneSimilarImageIsLoaded() throws Exception {
-        when(getSimilarImagesUseCase.getImages(ANY_GETTY_IMAGE_ID)).thenReturn(anyImageResponseSingle());
+        when(getSimilarImagesUseCase.getImages(ANY_IMAGE_ID)).thenReturn(anyImageResponseSingle());
 
         presenter.setCompositeDisposable(new CompositeDisposable());
-        presenter.loadSimilarImages(ANY_GETTY_IMAGE_ID);
+        presenter.loadSimilarImages(ANY_IMAGE_ID);
 
         verify(view).displaySimilarImage(ANY_SIMILAR_IMAGE_INDEX, ANY_SIMILAR_IMAGE_THUMB_URI);
     }
